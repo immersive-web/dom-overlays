@@ -48,7 +48,7 @@ On a smartphone, for example, in immersive-ar mode, the overlay must cover the e
 
 On a head-mounted AR display with a moderately-sized rectangular field of view (FoV), the overlay can be a head-locked UI that fills the renderable viewport. (Seeing the real world around the overlay helps reduce discomfort that could otherwise be caused by head-locked content, and the FoV is small enough to keep eye movements needed to read content in a comfortable range.)
 
-On a large-FoV VR headset, the overlay may appear as a rectangle floating in space that's kept in front of the user, but isn't necessarily strictly head-locked (in order to improve comfort). This rectangle may be smaller than the maximum FoV if necessary to ensure that the corners and edges remain easily visible. (The visible area can depend on the user's eye position and eye-to-lens distance, and extreme angles may be blurry for some headsets.)
+On a large-FoV VR headset, the overlay may appear as a rectangle floating in space that's kept in front of the user, but isn't necessarily strictly head-locked (in order to improve comfort). This rectangle may be smaller than the maximum FoV if necessary to ensure that the corners and edges remain easily visible. (The visible area can depend on the user's eye position and eye-to-lens distance, and extreme angles may be blurry for some headsets.) The user agent may also provide ways for the user to reposition or resize the floating rectangle.
 
 The display technology used affects how the overlay is composited. Applications should check the existing <code>[XRSession.XREnvironmentBlendMode](https://immersive-web.github.io/webxr/#xrsession-interface)</code> attribute. A see-through AR headset typically uses the <code>"additive"</code> blend mode, in this case black pixels appear transparent. If the session uses <code>"opaque"</code> or <code>"alpha-blend"</code> mode, the alpha channel is used to control visibility of DOM overlay contents.
 
@@ -67,6 +67,38 @@ WebXR also supports non-event-based input. This includes controller poses, butto
 
 If using a DOM overlay in a headset, the implementation should behave the same as for smartphones whenever the primary XR controller's targeting ray intersects the displayed DOM overlay. In other words, generate `"click"` events when the primary trigger is pressed, subject to whatever additional restrictions are specified, such as those for disambiguation.
 
+## Sample implementation
+
+A sample implementation of this style of DOM Overlay for handheld AR could be based on displaying the content of a fullscreened element as an overlay visible during an immersive-ar session. The site requests this mode as an optional or required feature in `requestSession`:
+
+```js
+navigator.xr.requestSession(‘immersive-ar’,
+   {optionalFeatures: ["dom-overlay-for-handheld-ar"]});
+```
+
+On session start, the document’s `<body>` element automatically enters fullscreen mode. The application can use the normal [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view. Note that the Fullscreen API supports fullscreening multiple elements, effectively using the top layer as a stack, where the document only fully exits fullscreen mode once the top layer is empty.
+
+```js
+  // <body> element is fullscreen
+ document.querySelector(‘#ui’).requestFullscreen();
+
+  // Selected element #ui is fullscreen
+
+  document.exitFullscreen();
+ // <body> element is fullscreen again
+
+  document.exitFullscreen();
+
+  // No more fullscreen elements, immersive-ar session ends
+```
+
+By design, there must always be an active fullscreened element while the session is active. Fully exiting fullscreen mode also ends the immersive-ar session. Conversely, ending the immersive-ar session automatically fully exits fullscreen mode to ensure that the user doesn’t end up in an indeterminate state. (The Fullscreen API allows this according to [4. UI](https://fullscreen.spec.whatwg.org/#ui) : “The user agent may end any fullscreen session without instruction from the end user or call to exitFullscreen() whenever the user agent deems it necessary.”)
+
+Input is handled by the fullscreened DOM element as usual, including advanced input such as displaying a keyboard when tapping a text input field. It's an open question if WebXR input events should also be generated in addition to this, or if the application would be responsible for handling world interactions based on DOM input events.
+
+A headset-based implementation can also support this mode, this is very similar to showing a floating browser tab as would be used for an in-headset 2D browsing mode. However, this leaves open questions about input handling, and it is likely to be mainly suitable as a compatibility mode to make content originally designed for handheld AR usable on a headset.
+
+See also the [design sketch](http://docs/document/d/e/2PACX-1vRpXB5wX1R1QRzniysT5J1LhLQXAE5OMPX0kQiY-ozv8LsdsP22nf3mDyV6F8G92O_m0qAWMswLqOHT/pub) and [i2i entry](https://www.chromestatus.com/feature/6048666307526656).
 
 ## References & acknowledgements
 
