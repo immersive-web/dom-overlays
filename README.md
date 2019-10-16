@@ -2,7 +2,7 @@
 
 Status: Incubation
 
-Feature lead: John Pallett (@JohnPallett)
+Feature lead: Klaus Weidner (@klausw)
 
 Originating proposal: [#50](https://github.com/immersive-web/proposals/issues/50)
 
