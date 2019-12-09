@@ -41,10 +41,16 @@ spec: webxr-1;
     type: dfn; text: transient action
     type: dfn; text: xr input source
     type: event; text: select
+</pre>
+
+<pre class="anchors">
 spec: dom; urlPrefix: https://dom.spec.whatwg.org/#
     type:dfn; text:fire an event; url: concept-event-fire
 spec: ui-events; urlPrefix: https://w3c.github.io/uievents/#
     type:dfn; text:topmost event target; url: topmost-event-target
+spec:html; urlPrefix: https://html.spec.whatwg.org/multipage/
+    type:method; for:Window; text:requestAnimationFrame(callback); url: imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe
+    type: dfn; text: rendering opportunity; url: webappapis.html#rendering-opportunity
 </pre>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -189,6 +195,10 @@ partial dictionary XRSessionInit {
 };
 </pre>
 
+If the DOM overlay feature is a required feature but the application did not supply a {{XRSessionInit/domOverlay}} member, the UA MUST treat this as an unresolved required feature and reject the {{XR/requestSession()}} promise with a {{NotSupportedError}}. If it was requested as an optional feature, the UA MUST ignore the feature request and not enable a DOM overlay.
+
+NOTE: The UA MAY emit local warnings such as developer console messages explaining why the DOM overlay was not enabled.
+
 XRSession {#xrsession}
 -------------
 
@@ -207,6 +217,8 @@ If the feature is enabled, the attribute value MUST be present.
 NOTE: Applications can check the presence {{XRSession/domOverlayState}} to verify that the DOM overlay feature is enabled and working, for example if it was requested as an optional feature.
 
 NOTE: The DOM overlay may be temporarily invisible to the user, for example if the user agent places it at a fixed orientation or location where it may end up outside the user's field of view after user movement. The {{XRSession/domOverlayState}} attribute still remains set while this is happening.
+
+While the session is active with a visible DOM overlay, the UA MUST treat this as [=rendering opportunity=] and execute {{Window}} {{Window/requestAnimationFrame()}} callbacks at a rate suitable for animating DOM content. These MAY run at different times and frequencies than {{XRSession/requestAnimationFrame()}} callbacks as used for drawing {{XRWebGLLayer}} content.
 
 XRInputSource {#xrinputsource}
 ----------------
@@ -230,11 +242,11 @@ The application MUST provide configuration for the DOM overlay through the {{XRS
 
 <pre class="idl">
 dictionary XRDOMOverlayInit {
-  Element root;
+  required Element root;
 };
 </pre>
 
-The <dfn dict-member for="XRDOMOverlayInit">root</dfn> attribute specifies the DOM element that will be displayed to the user as the content of the DOM overlay.
+The <dfn dict-member for="XRDOMOverlayInit">root</dfn> attribute specifies the DOM element that will be displayed to the user as the content of the DOM overlay. This is a required attribute, there is no default.
 
 <div class="example">
 The following code requests DOM overlay as an optional feature.
