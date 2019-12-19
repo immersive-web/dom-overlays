@@ -39,6 +39,7 @@ spec: webxr-1;
     type: dfn; text: screen
     type: dfn; text: transient input source
     type: dfn; text: transient action
+    type: dfn; text: auxiliary action
     type: dfn; text: xr input source
     type: event; text: select
 </pre>
@@ -229,11 +230,19 @@ When an {{XRInputSource}} begins the platform-specific action corresponding as i
 
   1. If the input source's {{XRInputSource/targetRaySpace}} intersects the DOM overlay at the time the input device's [=primary action=] is triggered:
     1. [=Queue a task=] to [=fire an event|fire=] an {{XRSessionEvent}} named [=beforexrselect=] on the [=topmost event target=] within the DOM overlay {{XRDOMOverlayInit/root}} being intersected by the {{XRInputSource/targetRaySpace}}, setting {{Event/target}} to that element. This events bubbles, is cancelable, and is composed.
-    1. If the event was NOT cancelled, treat this action a [=primary action=].
+    1. Check how XR input should be handled as follows:
+        <dl class="switch">
+          <dt>If the event was cancelled</dt>
+          <dd>
+            1. If the input source is a [=transient input source=], treat this as an [=auxiliary action=]. Otherwise, ignore this action for the purpose of generating XR input events.
+          </dd>
+          <dt>Otherwise</dt>
+          <dd>Treat the action as a [=primary action=] as usual for the input source.</dd>
+        </dl>
 
 </div>
 
-This also applies to [=transient input sources=]. The [=transient action=] is only considered a [=primary action=] if the  [=beforexrselect=] event was NOT cancelled.
+NOTE: Effectively, cancelling the [=beforexrselect=] event suppresses XR input select events, none of {{XRSession/selectstart}}, {{XRSession/selectend}}, or {{XRSession/select}} are generated for this action. For transient input sources, {{XRSession/inputsourceschange}} events are still generated, but cancelling the [=beforexrselect=] event causes the action to be treated as an [=auxiliary action=], similar to a secondary finger input.
 
 Initialization {#initialization}
 ==============
