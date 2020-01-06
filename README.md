@@ -6,6 +6,8 @@ Feature lead: Klaus Weidner (@klausw)
 
 Originating proposal: [#50](https://github.com/immersive-web/proposals/issues/50)
 
+Draft specification: https://immersive-web.github.io/dom-overlays/
+
 # Summary
 
 A simple DOM overlay on top of the graphics (e.g., WebGL). The overlay would generally be mostly transparent, allowing the immersive graphics (or real world for AR), to show through. The overlay is useful for HUD, options, configuration, etc. It is not intended to provide in-world UI, such as a sign on the facade of a building.
