@@ -281,7 +281,8 @@ Once the session is active, the {{XRSession/domOverlayState}} attribute provides
 <pre class="idl">
 enum XRDOMOverlayType {
   "screen",
-  "floating"
+  "floating",
+  "head-locked"
 };
 
 dictionary XRDOMOverlayState {
@@ -293,7 +294,11 @@ dictionary XRDOMOverlayState {
 
   - An overlay type of <dfn enum-value for="XRDOMOverlayType">floating</dfn> indicates that the DOM overlay appears as a floating rectangle in space. The initial location of this rectangle in world space is up to the UA, and the UA MAY move it during the session to keep it in view, or support user-initiated manual placement.
 
-NOTE: Future versions of this spec may add additional attributes to the overlay state, for example the current location in world space for a floating overlay, or additional modes such as head-locked.
+  - An overlay type of <dfn enum-value for="XRDOMOverlayType">head-locked</dfn> indicates that the DOM overlay follows the user's head movement consistently, appearing similar to a helmet heads-up display.
+
+NOTE: From the user's point of view, a "floating" overlay is perceived as stationary when rendered as if anchored to a real-world location, and this style is a common choice for interactive display surfaces in VR. A "head-locked" overlay is similar to the UI of non-immersive smart glasses and the UA could simulate this in VR and AR headsets.
+
+NOTE: Future versions of this spec may add additional attributes to the overlay state, for example the current location in world space for a floating overlay.
 
 
 Event handling for cross-origin content {#cross-origin-content-events}
