@@ -296,7 +296,7 @@ dictionary XRDOMOverlayState {
 
   - An overlay type of <dfn enum-value for="XRDOMOverlayType">head-locked</dfn> indicates that the DOM overlay follows the user's head movement consistently, appearing similar to a helmet heads-up display.
 
-NOTE: From the user's point of view, a "floating" overlay is perceived as stationary when rendered as if anchored to a real-world location, and this style is a common choice for interactive display surfaces in VR. A "head-locked" overlay is similar to the UI of non-immersive smart glasses and the UA could simulate this in VR and AR headsets.
+NOTE: From the user's point of view, a "floating" overlay is perceived as stationary when rendered as if anchored to a real-world location, and this style is a common choice for interactive display surfaces in VR. A "head-locked" overlay moves along with head rotations and does not have a fixed real-world location.
 
 NOTE: Future versions of this spec may add additional attributes to the overlay state, for example the current location in world space for a floating overlay.
 
