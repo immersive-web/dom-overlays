@@ -168,6 +168,31 @@ document.getElementById('button-container').addEventListener(
 </pre>
 </div>
 
+CSS pseudo-class {#css-pseudo-class}
+----------------
+
+The <dfn export>:xr-dom-overlay</dfn> [=pseudo-class=] MUST match the document's root element for the duration of an immersive session using a DOM Overlay.
+
+User-agent level style sheet defaults {#ua-style-sheet-defaults}
+----------------
+
+For styling purposes, the DOM Overlay element is treated as an active fullscreen element according to the [[FULLSCREEN]] API for the duration of the immersive session. It is styled using [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with the following additional styling to make the overlay element and its backdrop transparent:
+
+<pre highlight="css">
+:xr-dom-overlay :fullscreen,
+:xr-dom-overlay :fullscreen::backdrop {
+  background-color: rgba(0,0,0,0) !important;
+</pre>
+
+NOTE: Applications are encouraged to use the [=:xr-dom-overlay=] pseudo-class for conditionally styling UI elements during the session, including controlling visibility of interface elements.
+
+Fullscreen API integration {#fullscreen-api-integration}
+--------------------------
+
+The UA MAY implement DOM Overlay as a special case of the [[FULLSCREEN]] API. In this case, the UA MUST prevent changes to the active fullscreen element, rejecting {{Element/requestFullscreen}} requests for the duration of the immersive session.
+
+NOTE: The DOM Overlay API requires specifying the overlay element at session start, and does not provide a mechanism to change the active overlay element during the session. Applications would behave inconsistently across platforms if they could use the Fullscreen API to indirectly change the active overlay element.
+
 WebXR Device API Integration {#webxr-device-api-integration}
 ==============
 
