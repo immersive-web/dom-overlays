@@ -7,15 +7,15 @@
 
 Functional errors with formatted output.
 
-## Installation
+## Install
 
 [npm][]:
 
-```bash
+```sh
 npm install fault
 ```
 
-## Usage
+## Use
 
 ```js
 var fault = require('fault')
@@ -29,7 +29,7 @@ Yields:
 Error: Hello Eric!
     at FormattedError (~/node_modules/fault/index.js:30:12)
     at Object.<anonymous> (~/example.js:3:7)
-    ...
+    …
 ```
 
 Or, format a float in a type error:
@@ -75,7 +75,7 @@ See [`samsonjs/format`][fmt] for argument parsing.
 
 ###### Returns
 
-An instance of [Error][].
+An instance of [`Error`][error].
 
 ###### Other errors
 
@@ -90,7 +90,8 @@ An instance of [Error][].
 
 Factory to create instances of `ErrorConstructor` with support for formatting.
 Used internally to wrap the global error constructors, exposed for custom
-errors.  Returns a function just like `fault`.
+errors.
+Returns a function just like `fault`.
 
 ## License
 
