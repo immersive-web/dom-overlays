@@ -1222,7 +1222,7 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/cg-draft" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 8bc2fccb49a45a0af18c5e75ce18049d75f824b6" name="generator">
+  <meta content="Bikeshed version b43aa594f5014ff14748da1aace9afaa73d2b3e6" name="generator">
   <link href="https://immersive-web.github.io/dom-overlays/" rel="canonical">
   <link href="favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
   <link href="favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
@@ -1526,7 +1526,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">WebXR DOM Overlays Module</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-02-03">3 February 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-02-14">14 February 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1647,7 +1647,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <a class="n" data-link-type="idl-name" href="#dictdef-xrdomoverlayinit" id="ref-for-dictdef-xrdomoverlayinit"><c- n>XRDOMOverlayInit</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="XRSessionInit" data-dfn-type="dict-member" data-export data-type="XRDOMOverlayInit? " id="dom-xrsessioninit-domoverlay"><code><c- g>domOverlay</c-></code></dfn>;
 };
 </pre>
-   <p>If the DOM overlay feature is a required feature but the application did not supply a <code class="idl"><a data-link-type="idl" href="#dom-xrsessioninit-domoverlay" id="ref-for-dom-xrsessioninit-domoverlay①">domOverlay</a></code> member, the UA MUST treat this as an unresolved required feature and reject the <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#dom-xr-requestsession" id="ref-for-dom-xr-requestsession">requestSession()</a></code> promise with a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#notsupportederror" id="ref-for-notsupportederror">NotSupportedError</a></code>. If it was requested as an optional feature, the UA MUST ignore the feature request and not enable a DOM overlay.</p>
+   <p>If the DOM overlay feature is a required feature but the application did not supply a <code class="idl"><a data-link-type="idl" href="#dom-xrsessioninit-domoverlay" id="ref-for-dom-xrsessioninit-domoverlay①">domOverlay</a></code> member, the UA MUST treat this as an unresolved required feature and reject the <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webxr/#dom-xr-requestsession" id="ref-for-dom-xr-requestsession">requestSession()</a></code> promise with a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#notsupportederror" id="ref-for-notsupportederror">NotSupportedError</a></code>. If it was requested as an optional feature, the UA MUST ignore the feature request and not enable a DOM overlay.</p>
    <p class="note" role="note"><span>NOTE:</span> The UA MAY emit local warnings such as developer console messages explaining why the DOM overlay was not enabled.</p>
    <h3 class="heading settled" data-level="3.2" id="xrsession"><span class="secno">3.2. </span><span class="content">XRSession</span><a class="self-link" href="#xrsession"></a></h3>
    <p>This module extends the XRSession interface to add a new readonly attribute which reflects the current state of the active DOM overlay element.</p>
@@ -1709,7 +1709,8 @@ navigator<c- p>.</c->xr<c- p>.</c->requestSession<c- p>(</c-><c- t>'immersive-ar
    <p>Once the session is active, the <code class="idl"><a data-link-type="idl" href="#dom-xrsession-domoverlaystate" id="ref-for-dom-xrsession-domoverlaystate③">domOverlayState</a></code> attribute provides information about the DOM overlay.</p>
 <pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-xrdomoverlaytype"><code><c- g>XRDOMOverlayType</c-></code></dfn> {
   <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-screen" id="ref-for-dom-xrdomoverlaytype-screen"><c- s>"screen"</c-></a>,
-  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-floating" id="ref-for-dom-xrdomoverlaytype-floating"><c- s>"floating"</c-></a>
+  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-floating" id="ref-for-dom-xrdomoverlaytype-floating"><c- s>"floating"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-head-locked" id="ref-for-dom-xrdomoverlaytype-head-locked"><c- s>"head-locked"</c-></a>
 };
 
 <c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-xrdomoverlaystate"><code><c- g>XRDOMOverlayState</c-></code></dfn> {
@@ -1721,8 +1722,11 @@ navigator<c- p>.</c->xr<c- p>.</c->requestSession<c- p>(</c-><c- t>'immersive-ar
      <p>An overlay type of <dfn class="dfn-paneled idl-code" data-dfn-for="XRDOMOverlayType" data-dfn-type="enum-value" data-export data-lt="&quot;screen&quot;|screen" id="dom-xrdomoverlaytype-screen"><code>screen</code></dfn> indicates that the DOM overlay element covers the entire physical screen for a screen-based device, for example handheld AR. Its visual extent MUST match the visual extent of the <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#xrviewport" id="ref-for-xrviewport">XRViewport</a></code>(s) used for <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#xrwebgllayer" id="ref-for-xrwebgllayer②">XRWebGLLayer</a></code> rendering. For a monoscopic display, this is a single viewport. A steroscopic display screen would provide two viewports, in that case the DOM overlay MUST be rendered at the Z position matching the physical screen location, appearing identically in both eye views.</p>
     <li data-md>
      <p>An overlay type of <dfn class="dfn-paneled idl-code" data-dfn-for="XRDOMOverlayType" data-dfn-type="enum-value" data-export data-lt="&quot;floating&quot;|floating" id="dom-xrdomoverlaytype-floating"><code>floating</code></dfn> indicates that the DOM overlay appears as a floating rectangle in space. The initial location of this rectangle in world space is up to the UA, and the UA MAY move it during the session to keep it in view, or support user-initiated manual placement.</p>
+    <li data-md>
+     <p>An overlay type of <dfn class="dfn-paneled idl-code" data-dfn-for="XRDOMOverlayType" data-dfn-type="enum-value" data-export data-lt="&quot;head-locked&quot;|head-locked" id="dom-xrdomoverlaytype-head-locked"><code>head-locked</code></dfn> indicates that the DOM overlay follows the user’s head movement consistently, appearing similar to a helmet heads-up display.</p>
    </ul>
-   <p class="note" role="note"><span>NOTE:</span> Future versions of this spec may add additional attributes to the overlay state, for example the current location in world space for a floating overlay, or additional modes such as head-locked.</p>
+   <p class="note" role="note"><span>NOTE:</span> From the user’s point of view, a "floating" overlay is perceived as stationary when rendered as if anchored to a real-world location, and this style is a common choice for interactive display surfaces in VR. A "head-locked" overlay moves along with head rotations and does not have a fixed real-world location.</p>
+   <p class="note" role="note"><span>NOTE:</span> Future versions of this spec may add additional attributes to the overlay state, for example the current location in world space for a floating overlay.</p>
    <h2 class="heading settled" data-level="5" id="cross-origin-content-events"><span class="secno">5. </span><span class="content">Event handling for cross-origin content</span><a class="self-link" href="#cross-origin-content-events"></a></h2>
    <p>The user agent MUST NOT provide poses or gamepad input state for user interactions with cross-origin content such as an <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement" id="ref-for-htmliframeelement">HTMLIFrameElement</a></code> nested within the DOM overlay element.</p>
    <p>A user agent MAY meet this requirement by preventing user interactions with
@@ -1760,6 +1764,8 @@ all.</p>
    <li><a href="#dom-xrsession-domoverlaystate">domOverlayState</a><span>, in §3.2</span>
    <li><a href="#dom-xrdomoverlaytype-floating">"floating"</a><span>, in §4</span>
    <li><a href="#dom-xrdomoverlaytype-floating">floating</a><span>, in §4</span>
+   <li><a href="#dom-xrdomoverlaytype-head-locked">head-locked</a><span>, in §4</span>
+   <li><a href="#dom-xrdomoverlaytype-head-locked">"head-locked"</a><span>, in §4</span>
    <li><a href="#dom-globaleventhandlers-onbeforexrselect">onbeforexrselect</a><span>, in §2.1</span>
    <li><a href="#dom-xrdomoverlayinit-root">root</a><span>, in §4</span>
    <li><a href="#dom-xrdomoverlaytype-screen">"screen"</a><span>, in §4</span>
@@ -1963,7 +1969,7 @@ all.</p>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-xr-requestsession">
-   <a href="https://immersive-web.github.io/webxr/#dom-xr-requestsession">https://immersive-web.github.io/webxr/#dom-xr-requestsession</a><b>Referenced in:</b>
+   <a href="https://www.w3.org/TR/webxr/#dom-xr-requestsession">https://www.w3.org/TR/webxr/#dom-xr-requestsession</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-xr-requestsession">3.1. XRSessionInit</a>
    </ul>
@@ -2112,7 +2118,8 @@ all.</p>
 
 <c- b>enum</c-> <a href="#enumdef-xrdomoverlaytype"><code><c- g>XRDOMOverlayType</c-></code></a> {
   <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-screen" id="ref-for-dom-xrdomoverlaytype-screen②"><c- s>"screen"</c-></a>,
-  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-floating" id="ref-for-dom-xrdomoverlaytype-floating①"><c- s>"floating"</c-></a>
+  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-floating" id="ref-for-dom-xrdomoverlaytype-floating①"><c- s>"floating"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-xrdomoverlaytype-head-locked" id="ref-for-dom-xrdomoverlaytype-head-locked①"><c- s>"head-locked"</c-></a>
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-xrdomoverlaystate"><code><c- g>XRDOMOverlayState</c-></code></a> {
@@ -2185,6 +2192,12 @@ all.</p>
    <b><a href="#dom-xrdomoverlaytype-floating">#dom-xrdomoverlaytype-floating</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-xrdomoverlaytype-floating">4. Initialization</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-xrdomoverlaytype-head-locked">
+   <b><a href="#dom-xrdomoverlaytype-head-locked">#dom-xrdomoverlaytype-head-locked</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-xrdomoverlaytype-head-locked">4. Initialization</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
