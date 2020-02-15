@@ -59,9 +59,13 @@ Low-level inputs that intersect the DOM overlay rectangle (including transparent
 
 If a WebXR application uses a DOM overlay in conjunction with XR input, it is possible that a user action could be interpreted as both an interaction with a DOM element and a 3D input to the XR application, for example if the user touches an onscreen button, or uses a controller's primary button while pointing at the DOM overlay.
 
-Thus, either the user agent or application will need to ensure that such input is only interpreted in the desired way. Ideally, the user agent would provide this functionality, though we would need to define how it does so. There may be additional motivations and complexity related to security and privacy.
+WebXR's [input events](https://github.com/immersive-web/webxr/blob/master/input-explainer.md#input-events) (`"selectstart"`, `"selectend"`, and `"select"`) potentially duplicate DOM events when the user is interacting with a part of the scene covered by the DOM overlay, including transparent areas. To help applications disambiguate, the user agent generates a `beforexrselect` event on the clicked/touched DOM element. If the application calls `preventDefault()` on the event, the WebXR "select" events are suppressed. The `beforexrselect` event bubbles, so the application can set an event handler on a container DOM element to prevent XR "select" events for all elements within this container.
 
-WebXR's [input events](https://github.com/immersive-web/webxr/blob/master/input-explainer.md#input-events) (`"selectstart"`, `"selectend"`, and `"select"`) potentially duplicate DOM events when the user is interacting with a part of the scene covered by the DOM overlay, including transparent areas. It would be useful if the user agent could suppress WebXR input events if they were already handled by the application in a DOM event handler. For example, calling the `"click"` event's `stopPropagation()` or `preventDefault()` method should suppress the WebXR `"select"` event. This may require the user agent to special-case WebXR input events that interact with the DOM overlay, potentially incurring a small processing delay. `"selectstart"`/`"selectend"` events are potentially asymmetric since one of them may happen inside the DOM overlay while the other one is outside.
+```js
+document.getElementById('ui-container').addEventListener('beforexrselect', (ev) => {
+  ev.preventDefault();
+});
+```
 
 WebXR also supports non-event-based input. This includes controller poses, button/axis states, and transient XR input sources such as [Screen-based input](https://github.com/immersive-web/webxr/blob/master/input-explainer.md#screen) that creates 3D targeting rays based on 2D screen touch points. These inputs are not affected by DOM overlays and continue to be processed as usual. Applications are responsible for deduplicating these non-event inputs if they overlap with DOM events, though it's recommended to avoid UI designs that depend on this. There are many ambiguous corner cases, for example pointer movement that starts on a DOM element and ends outside it.
 
@@ -73,30 +77,17 @@ A sample implementation of this style of DOM Overlay for handheld AR could be ba
 
 ```js
 navigator.xr.requestSession(‘immersive-ar’,
-   {optionalFeatures: ["dom-overlay-for-handheld-ar"]});
+   {optionalFeatures: ["dom-overlay"],
+    domOverlay: {root: document.body}});
 ```
 
-On session start, the document’s `<body>` element automatically enters fullscreen mode. The application can use the normal [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view. Note that the Fullscreen API supports fullscreening multiple elements, effectively using the top layer as a stack, where the document only fully exits fullscreen mode once the top layer is empty.
-
-```js
-  // <body> element is fullscreen
- document.querySelector(‘#ui’).requestFullscreen();
-
-  // Selected element #ui is fullscreen
-
-  document.exitFullscreen();
- // <body> element is fullscreen again
-
-  document.exitFullscreen();
-
-  // No more fullscreen elements, immersive-ar session ends
-```
+On session start, the specified root element automatically enters fullscreen mode, and remains in this mode for the duration of the session. (Using the [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view is blocked by the UA.)
 
 By design, there must always be an active fullscreened element while the session is active. Fully exiting fullscreen mode also ends the immersive-ar session. Conversely, ending the immersive-ar session automatically fully exits fullscreen mode to ensure that the user doesn’t end up in an indeterminate state. (The Fullscreen API allows this according to [4. UI](https://fullscreen.spec.whatwg.org/#ui) : “The user agent may end any fullscreen session without instruction from the end user or call to exitFullscreen() whenever the user agent deems it necessary.”)
 
-Input is handled by the fullscreened DOM element as usual, including advanced input such as displaying a keyboard when tapping a text input field. It's an open question if WebXR input events should also be generated in addition to this, or if the application would be responsible for handling world interactions based on DOM input events.
+Input is handled by the fullscreened DOM element as usual, including advanced input such as displaying a keyboard when tapping a text input field.
 
-A headset-based implementation can also support this mode, this is very similar to showing a floating browser tab as would be used for an in-headset 2D browsing mode. However, this leaves open questions about input handling, and it is likely to be mainly suitable as a compatibility mode to make content originally designed for handheld AR usable on a headset.
+A headset-based implementation can also support this mode, this is very similar to showing a floating browser tab as would be used for an in-headset 2D browsing mode. The UA generates DOM input events based on XR controller actions, for example generating a `click` event at the location where the controller's pointer ray intersects the floating DOM content when the controller's primary trigger is used. This is intended to support a compatibility mode making content originally designed for handheld AR usable on a headset.
 
 See also the [design sketch](http://docs/document/d/e/2PACX-1vRpXB5wX1R1QRzniysT5J1LhLQXAE5OMPX0kQiY-ozv8LsdsP22nf3mDyV6F8G92O_m0qAWMswLqOHT/pub) and [i2i entry](https://www.chromestatus.com/feature/6048666307526656).
 
