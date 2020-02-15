@@ -176,13 +176,40 @@ The <dfn export>:xr-dom-overlay</dfn> [=pseudo-class=] MUST match the document's
 User-agent level style sheet defaults {#ua-style-sheet-defaults}
 ----------------
 
-For styling purposes, the DOM Overlay element is treated as an active fullscreen element according to the [[FULLSCREEN]] API for the duration of the immersive session. It is styled using [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with the following additional styling to make the overlay element and its backdrop transparent:
+The user-agent style sheet defaults for the DOM Overlay element are as follows:
 
 <pre highlight="css">
-:xr-dom-overlay :fullscreen,
-:xr-dom-overlay :fullscreen::backdrop {
-  background-color: rgba(0,0,0,0) !important;
+:xr-dom-overlay {
+    /* force a transparent background */
+    background: rgba(0,0,0,0) !important;
+
+    /* the following styling is identical to :fullscreen */
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+
+    /* intentionally not !important */
+    object-fit: contain;
+}
+
+/* If there's a backdrop from fullscreen mode, set that transparent. */
+:xr-dom-overlay:fullscreen::backdrop {
+  background: rgba(0,0,0,0) !important;
+}
 </pre>
+
+NOTE: This is based on [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with additional styling to make the overlay element transparent. A user agent MAY use the Fullscreen API to implement the DOM Overlay, and in that case its backdrop must also be transparent. The styling for [=:xr-dom-overlay=] does not explicitly depend on the Fullscreen API's pseudoclass or styling so that user agents have the flexibility to implement it independently of the Fullscreen API.
 
 NOTE: Applications are encouraged to use the [=:xr-dom-overlay=] pseudo-class for conditionally styling UI elements during the session, including controlling visibility of interface elements.
 
