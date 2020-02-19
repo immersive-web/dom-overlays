@@ -171,7 +171,7 @@ document.getElementById('button-container').addEventListener(
 CSS pseudo-class {#css-pseudo-class}
 ----------------
 
-The <dfn export>:xr-dom-overlay</dfn> [=pseudo-class=] MUST match the document's root element for the duration of an immersive session using a DOM Overlay.
+The <dfn export>:xr-overlay</dfn> [=pseudo-class=] MUST match the document's root element for the duration of an immersive session using a DOM Overlay.
 
 User-agent level style sheet defaults {#ua-style-sheet-defaults}
 ----------------
@@ -179,7 +179,7 @@ User-agent level style sheet defaults {#ua-style-sheet-defaults}
 The user-agent style sheet defaults for the DOM Overlay element are as follows:
 
 <pre highlight="css">
-:xr-dom-overlay {
+:xr-overlay {
     /* force a transparent background */
     background: rgba(0,0,0,0) !important;
 
@@ -204,14 +204,14 @@ The user-agent style sheet defaults for the DOM Overlay element are as follows:
 }
 
 /* If there's a backdrop from fullscreen mode, set that transparent. */
-:xr-dom-overlay:fullscreen::backdrop {
+:xr-overlay:fullscreen::backdrop {
   background: rgba(0,0,0,0) !important;
 }
 </pre>
 
-NOTE: This is based on [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with additional styling to make the overlay element transparent. A user agent MAY use the Fullscreen API to implement the DOM Overlay, and in that case its backdrop must also be transparent. The styling for [=:xr-dom-overlay=] does not explicitly depend on the Fullscreen API's pseudoclass or styling so that user agents have the flexibility to implement it independently of the Fullscreen API.
+NOTE: This is based on [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with additional styling to make the overlay element transparent. A user agent MAY use the Fullscreen API to implement the DOM Overlay, and in that case its backdrop must also be transparent. The styling for [=:xr-overlay=] does not explicitly depend on the Fullscreen API's pseudoclass or styling so that user agents have the flexibility to implement it independently of the Fullscreen API.
 
-NOTE: Applications are encouraged to use the [=:xr-dom-overlay=] pseudo-class for conditionally styling UI elements during the session, including controlling visibility of interface elements.
+NOTE: Applications are encouraged to use the [=:xr-overlay=] pseudo-class for conditionally styling UI elements during the session, including controlling visibility of interface elements.
 
 Fullscreen API integration {#fullscreen-api-integration}
 --------------------------
