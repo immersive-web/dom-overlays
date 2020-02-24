@@ -220,6 +220,10 @@ The UA MAY implement DOM Overlay as a special case of the [[FULLSCREEN]] API. In
 
 NOTE: The DOM Overlay API requires specifying the overlay element at session start, and does not provide a mechanism to change the active overlay element during the session. Applications would behave inconsistently across platforms if they could use the Fullscreen API to indirectly change the active overlay element.
 
+Alternatively, the UA MAY implement DOM Overlay independently of the [[FULLSCREEN]] API. In this case, the DOM overlay root element MUST still match the [=:xr-overlay=] pseudoclass and MUST be styled using the [[#ua-style-sheet-defaults]] for this pseudoclass. The UA MAY separately support using the fullscreen API for elements outside the DOM overlay root element, but this MUST NOT have any effect on how the DOM overlay content is displayed.
+
+NOTE: Handling DOM Overlay and Fullscreen API independently is intended to support a multi-display system such as a desktop PC with an attached VR headset. In this case, the Fullscreen API could be used to show page content on the 2D monitor, for example a canvas element with a third-person rendered view, while the DOM Overlay element and immersive content is separately displayed in the headset.
+
 WebXR Device API Integration {#webxr-device-api-integration}
 ==============
 
