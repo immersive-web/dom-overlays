@@ -202,14 +202,9 @@ The user-agent style sheet defaults for the DOM Overlay element are as follows:
     /* intentionally not !important */
     object-fit: contain;
 }
-
-/* If there's a backdrop from fullscreen mode, set that transparent. */
-:xr-overlay:fullscreen::backdrop {
-  background: rgba(0,0,0,0) !important;
-}
 </pre>
 
-NOTE: This is based on [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with additional styling to make the overlay element transparent. A user agent MAY use the Fullscreen API to implement the DOM Overlay, and in that case its backdrop must also be transparent. The styling for [=:xr-overlay=] does not explicitly depend on the Fullscreen API's pseudoclass or styling so that user agents have the flexibility to implement it independently of the Fullscreen API.
+NOTE: This is based on [[FULLSCREEN#user-agent-level-style-sheet-defaults]], with additional styling to make the overlay element's background transparent. The styling for [=:xr-overlay=] does not explicitly depend on the Fullscreen API's pseudoclass or styling so that user agents have the flexibility to implement it independently of the Fullscreen API.
 
 NOTE: Applications are encouraged to use the [=:xr-overlay=] pseudo-class for conditionally styling UI elements during the session, including controlling visibility of interface elements.
 
@@ -220,9 +215,13 @@ The UA MAY implement DOM Overlay as a special case of the [[FULLSCREEN]] API. In
 
 NOTE: The DOM Overlay API requires specifying the overlay element at session start, and does not provide a mechanism to change the active overlay element during the session. Applications would behave inconsistently across platforms if they could use the Fullscreen API to indirectly change the active overlay element.
 
-Alternatively, the UA MAY implement DOM Overlay independently of the [[FULLSCREEN]] API. In this case, the DOM overlay root element MUST still match the [=:xr-overlay=] pseudoclass and MUST be styled using the [[#ua-style-sheet-defaults]] for this pseudoclass. The UA MAY separately support using the fullscreen API for elements outside the DOM overlay root element, but this MUST NOT have any effect on how the DOM overlay content is displayed.
+Alternatively, the UA MAY implement DOM Overlay independently of the [[FULLSCREEN]] API. In this case, the DOM overlay root element MUST still match the [=:xr-overlay=] pseudoclass and MUST be styled in the immersive view using the [[#ua-style-sheet-defaults]] for this pseudoclass. The UA MAY separately support using the fullscreen API for elements outside the DOM overlay root element, but this MUST NOT have any effect on how the DOM overlay content is displayed.
 
 NOTE: Handling DOM Overlay and Fullscreen API independently is intended to support a multi-display system such as a desktop PC with an attached VR headset. In this case, the Fullscreen API could be used to show page content on the 2D monitor, for example a canvas element with a third-person rendered view, while the DOM Overlay element and immersive content is separately displayed in the headset.
+
+On a multi-display system where the immersive session uses a separate output device from the originally displayed web page, the DOM overlay element MUST NOT be visible or interactive on other displays as part of a 2D web page while it is being shown in the immersive view.
+
+NOTE: It is OK to show the DOM overlay content as part of a non-interactive headset mirror view or similar non-web-page UI. The intent of this multi-display restriction is to avoid inconsistent display of the overlay element and potentially confusing interactions if it's shown in two places at once. This also avoids implementation challenges related to displaying a DOM element on two separate displays simultaneously.
 
 WebXR Device API Integration {#webxr-device-api-integration}
 ==============
