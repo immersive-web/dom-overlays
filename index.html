@@ -1222,7 +1222,7 @@ Possible extra rowspan handling
 	}
 </style>
   <link href="https://www.w3.org/StyleSheets/TR/2016/cg-draft" rel="stylesheet" type="text/css">
-  <meta content="Bikeshed version 5721fde7f6b8111f662b83b678f9e181a9838206" name="generator">
+  <meta content="Bikeshed version 70c86369151f7b7b97b78c0f664dba09a4024ca2" name="generator">
   <link href="https://immersive-web.github.io/dom-overlays/" rel="canonical">
   <link href="favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
   <link href="favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
@@ -1526,7 +1526,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">WebXR DOM Overlays Module</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-03-02">2 March 2020</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2020-03-10">10 March 2020</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1671,7 +1671,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <p class="note" role="note"><span>NOTE:</span> The DOM Overlay API requires specifying the overlay element at session start, and does not provide a mechanism to change the active overlay element during the session. Applications would behave inconsistently across platforms if they could use the Fullscreen API to indirectly change the active overlay element.</p>
    <p>Alternatively, the UA MAY implement DOM Overlay independently of the <a data-link-type="biblio" href="#biblio-fullscreen">[FULLSCREEN]</a> API. In this case, the DOM overlay root element MUST still match the <a data-link-type="dfn" href="#xr-overlay" id="ref-for-xr-overlay②">:xr-overlay</a> pseudoclass and MUST be styled in the immersive view using the <a href="#ua-style-sheet-defaults">§ 2.3 User-agent level style sheet defaults</a> for this pseudoclass. The UA MAY separately support using the fullscreen API for elements outside the DOM overlay root element, but this MUST NOT have any effect on how the DOM overlay content is displayed.</p>
    <p class="note" role="note"><span>NOTE:</span> Handling DOM Overlay and Fullscreen API independently is intended to support a multi-display system such as a desktop PC with an attached VR headset. In this case, the Fullscreen API could be used to show page content on the 2D monitor, for example a canvas element with a third-person rendered view, while the DOM Overlay element and immersive content is separately displayed in the headset.</p>
-   <p>On a multi-display system where the immersive session uses a separate output device from the originally displayed web page, the DOM overlay element MUST NOT be visible or interactive on other displays as part of a 2D web page while it is being shown in the immersive view.</p>
+   <p>On a multi-display system where the immersive session uses a separate output device from the originally displayed web page, the DOM overlay element MUST NOT be visible or interactive on other displays as part of a 2D web page while it is being shown in the immersive view. The UA MAY choose to hide or disable the entire page on other displays for the duration of the session.</p>
    <p class="note" role="note"><span>NOTE:</span> It is OK to show the DOM overlay content as part of a non-interactive headset mirror view or similar non-web-page UI. The intent of this multi-display restriction is to avoid inconsistent display of the overlay element and potentially confusing interactions if it’s shown in two places at once. This also avoids implementation challenges related to displaying a DOM element on two separate displays simultaneously.</p>
    <h2 class="heading settled" data-level="3" id="webxr-device-api-integration"><span class="secno">3. </span><span class="content">WebXR Device API Integration</span><a class="self-link" href="#webxr-device-api-integration"></a></h2>
    <p>This module expands the definitions of <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#dictdef-xrsessioninit" id="ref-for-dictdef-xrsessioninit">XRSessionInit</a></code> and <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#xrsession" id="ref-for-xrsession">XRSession</a></code>, and modifies the behavior of <code class="idl"><a data-link-type="idl" href="https://immersive-web.github.io/webxr/#xrinputsource" id="ref-for-xrinputsource">XRInputSource</a></code> events.</p>
