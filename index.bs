@@ -226,7 +226,7 @@ Fullscreen API integration {#fullscreen-api-integration}
 
 The UA MAY implement DOM Overlay as a special case of the [[FULLSCREEN]] API. In this case, the UA MUST prevent changes to the active fullscreen element, rejecting {{Element/requestFullscreen}} requests for the duration of the immersive session.
 
-When implemented through the Fullscreen API, the root stacking context does not paint. The root stacking context is above the root element stacking context, its children are the document root element's stacking context and the [=top layer=] elements' stacking contexts (in that order).
+When implemented through the Fullscreen API, the [=root element=] [=stacking context=] does not paint. Only the stacking contexts for the elements in the [=top layer=], including the [=overlay element=], paint.
 
 NOTE: The DOM Overlay API requires specifying the overlay element at session start, and does not provide a mechanism to change the active overlay element during the session. Applications would behave inconsistently across platforms if they could use the Fullscreen API to indirectly change the active overlay element.
 
