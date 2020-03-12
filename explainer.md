@@ -71,9 +71,9 @@ WebXR also supports non-event-based input. This includes controller poses, butto
 
 If using a DOM overlay in a headset, the implementation should behave the same as for smartphones whenever the primary XR controller's targeting ray intersects the displayed DOM overlay. In other words, generate `"click"` events when the primary trigger is pressed, subject to whatever additional restrictions are specified, such as those for disambiguation.
 
-## Sample implementation
+## Implementation
 
-A sample implementation of this style of DOM Overlay for handheld AR could be based on displaying the content of a fullscreened element as an overlay visible during an immersive-ar session. The site requests this mode as an optional or required feature in `requestSession`:
+A sample implementation of this style of DOM Overlay for handheld AR displays the selected overlay element as a transparent fullscreen view that remains visible during an immersive-ar session. The site requests this mode as an optional or required feature in `requestSession`:
 
 ```js
 navigator.xr.requestSession(‘immersive-ar’,
@@ -82,6 +82,10 @@ navigator.xr.requestSession(‘immersive-ar’,
 ```
 
 On session start, the specified root element automatically enters fullscreen mode, and remains in this mode for the duration of the session. (Using the [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view is blocked by the UA.)
+
+![Image of Lorenz attractor in AR mode](images/lorenz-s25.png)
+
+During the session, the application can use normal DOM APIs to manipulate the content of the overlay element, use DOM event handlers, and also use WebXR rendering and controller input as usual.
 
 By design, there must always be an active fullscreened element while the session is active. Fully exiting fullscreen mode also ends the immersive-ar session. Conversely, ending the immersive-ar session automatically fully exits fullscreen mode to ensure that the user doesn’t end up in an indeterminate state. (The Fullscreen API allows this according to [4. UI](https://fullscreen.spec.whatwg.org/#ui) : “The user agent may end any fullscreen session without instruction from the end user or call to exitFullscreen() whenever the user agent deems it necessary.”)
 
