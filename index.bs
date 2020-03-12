@@ -181,7 +181,7 @@ NOTE: Backdrop filter effects on the DOM overlay element or its descendants do n
 
 The stacking contexts for ancestors of the overlay element, if any, do not paint to the immersive session's display.
 
-NOTE: The [=overlay element=] itself is a [=stacking context=] due to `position: fixed` styling..
+NOTE: The [=overlay element=] itself is a [=stacking context=] due to `position: fixed` styling.
 
 NOTE: on a multi-display system, the UA MAY paint and draw stacking contexts for ancestors or sibling trees of the overlay element on a separate display such as a desktop monitor.
 
