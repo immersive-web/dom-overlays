@@ -83,7 +83,7 @@ navigator.xr.requestSession(‘immersive-ar’,
 
 On session start, the specified root element automatically enters fullscreen mode, and remains in this mode for the duration of the session. (Using the [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view is blocked by the UA.)
 
-![Image of Lorenz attractor in AR mode](images/lorenz-s25.png)
+![Image of Lorenz attractor in AR mode](images/lorenz-p50.png)
 
 During the session, the application can use normal DOM APIs to manipulate the content of the overlay element, use DOM event handlers, and also use WebXR rendering and controller input as usual.
 
