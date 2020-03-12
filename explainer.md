@@ -77,19 +77,35 @@ A sample implementation of this style of DOM Overlay for handheld AR displays th
 
 ```js
 navigator.xr.requestSession(‘immersive-ar’,
-   {optionalFeatures: ["dom-overlay"],
-    domOverlay: {root: document.body}});
+   {
+     optionalFeatures: ["dom-overlay"],
+     domOverlay: {
+       root: document.body
+     }
+   }).then(onSessionStarted, onRequestSessionError);
 ```
 
 On session start, the specified root element automatically enters fullscreen mode, and remains in this mode for the duration of the session. (Using the [Fullscreen API](https://fullscreen.spec.whatwg.org/) to change the fullscreen view is blocked by the UA.)
 
+![Image of barebones overlay in AR mode](images/barebones-p50.png)
 ![Image of Lorenz attractor in AR mode](images/lorenz-p50.png)
 
 During the session, the application can use normal DOM APIs to manipulate the content of the overlay element, use DOM event handlers, and also use WebXR rendering and controller input as usual.
 
 By design, there must always be an active fullscreened element while the session is active. Fully exiting fullscreen mode also ends the immersive-ar session. Conversely, ending the immersive-ar session automatically fully exits fullscreen mode to ensure that the user doesn’t end up in an indeterminate state. (The Fullscreen API allows this according to [4. UI](https://fullscreen.spec.whatwg.org/#ui) : “The user agent may end any fullscreen session without instruction from the end user or call to exitFullscreen() whenever the user agent deems it necessary.”)
 
-Input is handled by the fullscreened DOM element as usual, including advanced input such as displaying a keyboard when tapping a text input field.
+Input is handled by the fullscreened DOM element as usual, including advanced input such as displaying a keyboard when tapping a text input field. For example, a handheld AR application can use a DOM button for an "exit AR" action:
+
+```js
+let xrSession;
+function onSessionStarted(session) {
+  xrSession = session;
+}
+
+document.getElementById('exit-button').onclick = (ev) => {
+  xrSession.end();
+};
+```
 
 A headset-based implementation can also support this mode, this is very similar to showing a floating browser tab as would be used for an in-headset 2D browsing mode. The UA generates DOM input events based on XR controller actions, for example generating a `click` event at the location where the controller's pointer ray intersects the floating DOM content when the controller's primary trigger is used. This is intended to support a compatibility mode making content originally designed for handheld AR usable on a headset.
 
@@ -98,3 +114,154 @@ See also the [design sketch](http://docs/document/d/e/2PACX-1vRpXB5wX1R1QRzniysT
 ## References & acknowledgements
 
 This proposal is based on extended discussions in the `#immersive-web` community, and builds on proposals and suggestions by @ddorwin, @JohnPallett, @toji, and many others. This isn't intended to imply that it represents a consensus, it's supposed to be a starting point for further conversations.
+
+## Full "barebones" example
+
+The following self-contained "barebones" code is a lighly modified version of this sample:
+https://immersive-web.github.io/webxr-samples/ar-barebones.html
+
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="overlay">
+      <header>
+        <details open>
+          <summary>Barebones WebXR DOM Overlay</summary>
+          <p>
+            This sample demonstrates extremely simple use of an
+            "immersive-ar" session with no library dependencies, with an
+            optional DOM overlay. It doesn't render anything exciting, just
+            draws a rectangle with a slowly changing color to prove it's
+            working.
+            <a class="back" href="./index.html">Back</a>
+          </p>
+          <div id="session-info"></div>
+          <div id="warning-zone"></div>
+          <button id="xr-button" class="barebones-button" disabled>
+            XR not found
+          </button>
+        </details>
+      </header>
+    </div>
+    <main style="text-align: center;">
+      <p>Body content</p>
+    </main>
+    <script type="module">
+      // XR globals.
+      let xrButton = document.getElementById("xr-button");
+      let xrSession = null;
+      let xrRefSpace = null;
+
+      // WebGL scene globals.
+      let gl = null;
+
+      function checkSupportedState() {
+        navigator.xr.isSessionSupported("immersive-ar").then(supported => {
+          if (supported) {
+            xrButton.innerHTML = "Enter AR";
+          } else {
+            xrButton.innerHTML = "AR not found";
+          }
+
+          xrButton.disabled = !supported;
+        });
+      }
+
+      function initXR() {
+        if (!window.isSecureContext) {
+          let message = "WebXR unavailable due to insecure context";
+          document.getElementById("warning-zone").innerText = message;
+        }
+
+        if (navigator.xr) {
+          xrButton.addEventListener("click", onButtonClicked);
+          navigator.xr.addEventListener("devicechange", checkSupportedState);
+          checkSupportedState();
+        }
+      }
+
+      function onButtonClicked() {
+        if (!xrSession) {
+          // Ask for an optional DOM Overlay, see https://immersive-web.github.io/dom-overlays/
+          navigator.xr
+            .requestSession("immersive-ar", {
+              optionalFeatures: ["dom-overlay"],
+              domOverlay: { root: document.getElementById("overlay") }
+            })
+            .then(onSessionStarted, onRequestSessionError);
+        } else {
+          xrSession.end();
+        }
+      }
+
+      function onSessionStarted(session) {
+        xrSession = session;
+        xrButton.innerHTML = "Exit AR";
+
+        // Show which type of DOM Overlay got enabled (if any)
+        document.getElementById("session-info").innerHTML =
+          "DOM Overlay type: " + session.domOverlayState.type;
+
+        session.addEventListener("end", onSessionEnded);
+        let canvas = document.createElement("canvas");
+        gl = canvas.getContext("webgl", {
+          xrCompatible: true
+        });
+        session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl) });
+        session.requestReferenceSpace("local").then(refSpace => {
+          xrRefSpace = refSpace;
+          session.requestAnimationFrame(onXRFrame);
+        });
+      }
+
+      function onRequestSessionError(ex) {
+        alert("Failed to start immersive AR session.");
+        console.error(ex.message);
+      }
+
+      function onEndSession(session) {
+        session.end();
+      }
+
+      function onSessionEnded(event) {
+        xrSession = null;
+        xrButton.innerHTML = "Enter AR";
+        document.getElementById("session-info").innerHTML = "";
+        gl = null;
+      }
+
+      function onXRFrame(t, frame) {
+        let session = frame.session;
+        session.requestAnimationFrame(onXRFrame);
+        let pose = frame.getViewerPose(xrRefSpace);
+
+        if (pose) {
+          gl.bindFramebuffer(
+            gl.FRAMEBUFFER,
+            session.renderState.baseLayer.framebuffer
+          );
+
+          // Update the clear color so that we can observe the color in the
+          // headset changing over time. Use a scissor rectangle to keep the AR
+          // scene visible.
+          const width = session.renderState.baseLayer.framebufferWidth;
+          const height = session.renderState.baseLayer.framebufferHeight;
+          gl.enable(gl.SCISSOR_TEST);
+          gl.scissor(width / 4, height / 4, width / 2, height / 2);
+          let time = Date.now();
+          gl.clearColor(
+            Math.cos(time / 2000),
+            Math.cos(time / 4000),
+            Math.cos(time / 6000),
+            0.5
+          );
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        }
+      }
+
+      initXR();
+    </script>
+  </body>
+</html>
+```
