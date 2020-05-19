@@ -2,7 +2,7 @@
 Shortname: webxr-dom-overlays
 Title: WebXR DOM Overlays Module
 Group: immersivewebwg
-Status: CG-DRAFT
+Status: ED
 ED: https://immersive-web.github.io/dom-overlays/
 Repository: immersive-web/dom-overlays
 Level: 1
