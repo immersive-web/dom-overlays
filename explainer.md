@@ -2,9 +2,11 @@
 
 ## Introduction
 
+The DOM overlays API provides a way to show DOM content such as text and control elements during an immersive AR session. This content is displayed as a transparent-background layer superimposed on the real-world scene and rendered WebGL content.
+
 The current WebXR specification does not include support for inline AR content, the only available AR session mode is `immersive-ar`, and this is intended to exclusively show the real world or camera image combined with application-drawn WebGL content.
 
-It would be very useful to support a hybrid mode where the scene can be augmented (no pun intended) with an overlayed 2D user interface based on HTML text and DOM elements such as buttons. This is convenient for developers, but also helps with features such as internationalization and accessibility that would be difficult to handle correctly in a purely WebGL-based UI. (Accessibility is beyond the scope of this initial proposal, but the goal is to make it possible for user agents to extend existing support to this new API.)
+It would be very useful to support a hybrid mode where the scene can be augmented (no pun intended) with an overlayed 2D user interface based on HTML text and DOM elements such as buttons. This is convenient for developers, but also helps with features such as internationalization and accessibility that would be difficult to handle correctly in a purely WebGL-based UI. The goal is to make it possible for user agents to leverage existing support for DOM accessibility features so that they can be used for DOM content displayed through this new API.
 
 Platforms that support multiple layers at the device compositor level could use that to render the DOM overlay at higher quality than WebGL-drawn content. (See the [layers proposal](https://github.com/immersive-web/layers#why-layers-what-are-the-benefits) for more background on this.) 
 
