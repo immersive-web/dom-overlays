@@ -1,12 +1,19 @@
-# DOM Overlays
+# DOM Overlays Specification
 
-Status: Incubation
+[![Build Status](https://travis-ci.org/immersive-web/dom-overlays.svg?branch=master)](https://travis-ci.org/immersive-web/dom-overlays)
 
-Feature lead: Klaus Weidner (@klausw)
+The [DOM Overlays](https://immersive-web.github.io/dom-overlays/) is the 
+repository of the [Immersive Web Working Group][webxrwg].
 
 Originating proposal: [#50](https://github.com/immersive-web/proposals/issues/50)
 
-Draft specification: https://immersive-web.github.io/dom-overlays/
+## Taking Part
+
+1. Read the [code of conduct][CoC]
+2. See if your issue is being discussed in the [issues][8], or if your idea is being discussed in the [proposals repo][19].
+3. We will be publishing the minutes from the bi-weekly calls.
+4. You can also join the working group to participate in these discussions.
+
 
 # Summary
 
@@ -50,3 +57,8 @@ The mapping of this functionality to traditional flat displays is fairly clear -
 ## Could this be used for VR modes?
 
 In a word, maybe. This functionality is based on the fact that all AR sessions are “immersive,” even on smartphones. If this exploration is successful, it may be worth considering whether “immersive-vr” should also be supported on traditional displays and allow such an overlay to be specified. As part of this VR exploration, we may want to consider the usefulness vs. the complexity for VR implementations and the likely adoption by implementers.
+
+<!-- Links -->
+[CoC]: https://immersive-web.github.io/homepage/code-of-conduct.html
+[webxrwg]: https://w3.org/immersive-web
+
