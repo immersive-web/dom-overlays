@@ -1,12 +1,66 @@
-# DOM Overlays
+# DOM Overlays Specification
 
-Status: Incubation
+[![Build Status](https://travis-ci.org/immersive-web/dom-overlays.svg?branch=master)](https://travis-ci.org/immersive-web/dom-overlays)
 
-Feature lead: Klaus Weidner (@klausw)
+The [DOM Overlays](https://immersive-web.github.io/dom-overlays/) is the 
+repository of the [Immersive Web Working Group][webxrwg].
 
 Originating proposal: [#50](https://github.com/immersive-web/proposals/issues/50)
 
-Draft specification: https://immersive-web.github.io/dom-overlays/
+## Taking Part
+
+1. Read the [code of conduct][CoC]
+2. See if your issue is being discussed in the [issues](https://github.com/immersive-web/dom-overlays/issues), or if your idea is being discussed in the [proposals repo][cgproposals].
+3. We will be publishing the minutes from the bi-weekly calls.
+4. You can also join the working group to participate in these discussions.
+
+## Specifications
+
+* [DOM Overlays](https://immersive-web.github.io/dom-overlays/): DOM Overlays module specification for WebXR
+* [Explainer](explainer.md)
+  * [Design Choices](design-choices.md)
+  * [Experiments](experiments.md)
+* [Security and Privacy Questionnaire](security-privacy-questionnaire.md)
+
+### Related specifications
+* [WebXR Device API - Level 1][webxrspec]: Main specification for JavaScript API for accessing VR and AR devices, including sensors and head-mounted displays.
+
+## Relevant Links
+
+* [Immersive Web Community Group][webxrcg]
+* [Immersive Web Early Adopters Guide][webxrref]
+* [Immersive Web Working Group Charter][wgcharter]
+
+## Communication
+
+* [Immersive Web Working Group][webxrwg]
+* [Immersive Web Community Group][webxrcg]
+* [GitHub issues list](https://github.com/immersive-web/dom-overlays/issues)
+* [`public-immersive-web` mailing list][publiclist]
+
+## Maintainers
+
+To generate the spec document (`index.html`) from the `index.bs` [Bikeshed][bikeshed] document:
+
+```sh
+make
+```
+
+## Tests
+
+For normative changes, a corresponding
+[web-platform-tests][wpt] PR is highly appreciated. Typically,
+both PRs will be merged at the same time. Note that a test change that contradicts the spec should
+not be merged before the corresponding spec change. If testing is not practical, please explain why
+and if appropriate [file a web-platform-tests issue][wptissue]
+to follow up later. Add the `type:untestable` or `type:missing-coverage` label as appropriate.
+
+
+## License
+
+Per the [`LICENSE.md`](LICENSE.md) file:
+
+> All documents in this Repository are licensed by contributors under the  [W3C Software and Document License](https://www.w3.org/Consortium/Legal/copyright-software).
 
 # Summary
 
@@ -50,3 +104,17 @@ The mapping of this functionality to traditional flat displays is fairly clear -
 ## Could this be used for VR modes?
 
 In a word, maybe. This functionality is based on the fact that all AR sessions are “immersive,” even on smartphones. If this exploration is successful, it may be worth considering whether “immersive-vr” should also be supported on traditional displays and allow such an overlay to be specified. As part of this VR exploration, we may want to consider the usefulness vs. the complexity for VR implementations and the likely adoption by implementers.
+
+<!-- Links -->
+[CoC]: https://immersive-web.github.io/homepage/code-of-conduct.html
+[webxrwg]: https://w3.org/immersive-web
+[cgproposals]: https://github.com/immersive-web/proposals
+[webxrspec]: https://immersive-web.github.io/webxr/
+[webxrcg]: https://www.w3.org/community/immersive-web/
+[wgcharter]: https://www.w3.org/2020/05/immersive-Web-wg-charter.html
+[webxrref]: https://immersive-web.github.io/webxr-reference/
+[publiclist]: https://lists.w3.org/Archives/Public/public-immersive-web-wg/
+[bikeshed]: https://github.com/tabatkins/bikeshed
+[wpt]: https://github.com/web-platform-tests/wpt
+[wptissue]: https://github.com/web-platform-tests/wpt/issues/new
+
