@@ -14,6 +14,14 @@ Originating proposal: [#50](https://github.com/immersive-web/proposals/issues/50
 3. We will be publishing the minutes from the bi-weekly calls.
 4. You can also join the working group to participate in these discussions.
 
+## Specifications
+
+* [DOM Overlays](https://immersive-web.github.io/dom-overlays/): DOM Overlays module specification for WebXR
+* [Explainer](explainer.md)
+  * [Design Choices](design-choices.md)
+  * [Experiments](experiments.md)
+* [Security and Privacy Questionnaire](security-privacy-questionnaire.md)
+
 ### Related specifications
 * [WebXR Device API - Level 1][webxrspec]: Main specification for JavaScript API for accessing VR and AR devices, including sensors and head-mounted displays.
 
