@@ -49,7 +49,7 @@ When using an AR headset, the DOM overlay can appear as a rectangle floating in 
 
 The DOM overlay content is interactive and supports DOM input events in addition to [WebXR input](https://immersive-web.github.io/webxr/#input). DOM input uses the touchscreen for handheld AR, or a handheld controller with a pointing ray for headset AR. A new `beforexrselect` event makes it possible to distinguish DOM input from XR input to avoid duplicate actions. Please see the [Input](#input) section below for details.
 
-## Code Example
+## Code example
 
 Applications can use a DOM overlay by requesting the <code>["dom-overlay"](https://immersive-web.github.io/dom-overlays/#xrsessioninit)</code> feature as an optional or required feature in the WebXR `requestSession()` call, and supplying a DOM element as the `domOverlay.root` attribute in the session initialization dictionary.
 
@@ -146,6 +146,14 @@ On a handheld AR implementation, screen touches generate DOM events for the over
 For headset-based AR, The UA generates DOM input events based on XR controller actions, for example generating a `click` event at the location where the controller's pointer ray intersects the floating DOM content when the controller's primary trigger is used. This is intended to support a compatibility mode making content originally designed for handheld AR usable on a headset.
 
 Low-level inputs that intersect the DOM overlay rectangle (including transparent areas) will be forwarded to the overlay's DOM element for processing according to the usual DOM event propagation model, using event x/y coordinates mapped to the DOM overlay rectangle. For example, screen touch or ray inputs are converted to DOM input events including `"click"` events (required) and optionally also pointerdown/pointermove/pointerup events if supported by the implementation.
+
+### Input event handling for cross-origin content
+
+If the DOM overlay element contains cross-origin content, for example an `<iframe>` element showing content from a different domain, the UA must block WebXR input events and related data such as controller poses while the user is interacting with that content to avoid information leaks. This is similar to the existing behavior for 2D web pages where the outer page is prevented from getting DOM pointermove events during mouse movement across a cross-domain embedded iframe element, just extended to also cover XR input sources in this situation.
+
+Alternatively, the user agent may instead choose to make cross-domain content noninteractive or prevent it from being displayed.
+
+### Input event deduplication
 
 If a WebXR application uses a DOM overlay in conjunction with XR input, it is possible that a user action could be interpreted as both an interaction with a DOM element and as 3D input to the XR application. Specifically, WebXR's [input events](https://github.com/immersive-web/webxr/blob/master/input-explainer.md#input-events) (`"selectstart"`, `"selectend"`, and `"select"`) potentially duplicate DOM events when the user is interacting with a part of the scene covered by the DOM overlay, including transparent areas of the DOM overlay.
 
