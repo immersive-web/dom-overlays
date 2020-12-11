@@ -1,8 +1,8 @@
 "use strict";
 
-var chalk      = require("chalk");
-var parser     = require("./lib/parser");
-var objectPath = require("object-path");
+var chalk   = require("chalk");
+var parser  = require("./lib/parser");
+var dlv     = require("dlv");
 
 /**
  * Stateless compiler.
@@ -105,7 +105,7 @@ function getFun(obj, path) {
         return false;
     }
 
-    return objectPath.get(obj, path);
+    return dlv(obj, path);
 }
 
 /**

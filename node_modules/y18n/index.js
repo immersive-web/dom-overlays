@@ -11,11 +11,14 @@ function Y18N (opts) {
   this.fallbackToLanguage = typeof opts.fallbackToLanguage === 'boolean' ? opts.fallbackToLanguage : true
 
   // internal stuff.
-  this.cache = {}
+  this.cache = Object.create(null)
   this.writeQueue = []
 }
 
 Y18N.prototype.__ = function () {
+  if (typeof arguments[0] !== 'string') {
+    return this._taggedLiteral.apply(this, arguments)
+  }
   var args = Array.prototype.slice.call(arguments)
   var str = args.shift()
   var cb = function () {} // start with noop.
@@ -38,6 +41,19 @@ Y18N.prototype.__ = function () {
   }
 
   return util.format.apply(util, [this.cache[this.locale][str] || str].concat(args))
+}
+
+Y18N.prototype._taggedLiteral = function (parts) {
+  var args = arguments
+  var str = ''
+  parts.forEach(function (part, i) {
+    var arg = args[i + 1]
+    str += part
+    if (typeof arg !== 'undefined') {
+      str += '%s'
+    }
+  })
+  return this.__.apply(null, [str].concat([].slice.call(arguments, 1)))
 }
 
 Y18N.prototype._enqueueWrite = function (work) {
