@@ -29,13 +29,16 @@ export type Method =
   | 'post' | 'POST'
   | 'put' | 'PUT'
   | 'patch' | 'PATCH'
+  | 'purge' | 'PURGE'
+  | 'link' | 'LINK'
+  | 'unlink' | 'UNLINK'
 
-export type ResponseType = 
-  | 'arraybuffer' 
-  | 'blob' 
-  | 'document' 
-  | 'json' 
-  | 'text' 
+export type ResponseType =
+  | 'arraybuffer'
+  | 'blob'
+  | 'document'
+  | 'json'
+  | 'text'
   | 'stream'
 
 export interface AxiosRequestConfig {
@@ -49,6 +52,7 @@ export interface AxiosRequestConfig {
   paramsSerializer?: (params: any) => string;
   data?: any;
   timeout?: number;
+  timeoutErrorMessage?: string;
   withCredentials?: boolean;
   adapter?: AxiosAdapter;
   auth?: AxiosBasicCredentials;
@@ -58,13 +62,15 @@ export interface AxiosRequestConfig {
   onUploadProgress?: (progressEvent: any) => void;
   onDownloadProgress?: (progressEvent: any) => void;
   maxContentLength?: number;
-  validateStatus?: (status: number) => boolean;
+  validateStatus?: ((status: number) => boolean) | null;
+  maxBodyLength?: number;
   maxRedirects?: number;
   socketPath?: string | null;
   httpAgent?: any;
   httpsAgent?: any;
   proxy?: AxiosProxyConfig | false;
   cancelToken?: CancelToken;
+  decompress?: boolean;
 }
 
 export interface AxiosResponse<T = any>  {
@@ -82,6 +88,7 @@ export interface AxiosError<T = any> extends Error {
   request?: any;
   response?: AxiosResponse<T>;
   isAxiosError: boolean;
+  toJSON: () => object;
 }
 
 export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
@@ -133,6 +140,7 @@ export interface AxiosInstance {
   get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
   delete<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
   head<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+  options<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
   post<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
   put<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
   patch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
@@ -145,8 +153,9 @@ export interface AxiosStatic extends AxiosInstance {
   isCancel(value: any): boolean;
   all<T>(values: (T | Promise<T>)[]): Promise<T[]>;
   spread<T, R>(callback: (...args: T[]) => R): (array: T[]) => R;
+  isAxiosError(payload: any): payload is AxiosError;
 }
 
-declare const Axios: AxiosStatic;
+declare const axios: AxiosStatic;
 
-export default Axios;
+export default axios;

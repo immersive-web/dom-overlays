@@ -37,6 +37,20 @@ As a starting point, when DOM overlay is not in use, a WebXR `immersive-ar` sess
 
 The DOM overlays API adds an additional layer to this view. When it is active, the UA adds a transparent-background rectangle to the scene that displays the content of a DOM element and its child elements. The overlay element has a transparent background and is invisible when empty. Applications will typically place non-transparent child elements within the transparent overlay element to provide UI elements without blocking the entire viewport.
 
+Applications can request use of a DOM overlay as a session request [feature](https://immersive-web.github.io/webxr/#dom-xrsessioninit-optionalfeatures). To do so, add the string `dom-overlay` to either `requiredFeatures` or `optionalFeatures` in the `requestSession` call, along with a reference to the DOM element used as the content of the DOM overlay, for example:
+
+```js
+  navigator.xr.requestSession(‘immersive-ar’,
+   {
+     optionalFeatures: ["dom-overlay"],
+     domOverlay: {
+       root: document.getElementById("overlay")
+     }
+   }
+```
+
+If DOM overlay was requested as an [optional feature](https://immersive-web.github.io/webxr/#dom-xrsessioninit-optionalfeatures) for the session request, the session will proceed even if the feature is unavailable. If the feature is active, the XR session object will have a `domOverlayState` attribute. If that attribute is absent, applications must assume that the DOM content is not visible and may choose to provide an alternate user interface. (If that is not feasible, applications should instead request DOM overlay as a required feature. That causes the session request to fail if the feature is not supported.)
+
 The exact appearance of the DOM overlay is platform dependent. Applications can use the [xrsession.domOverlayState.type](https://immersive-web.github.io/dom-overlays/#ref-for-dom-xrsession-domoverlaystate%E2%91%A2) attribute to distinguish the display modes.
 
 On a phone used for handheld AR, a typical implementation would use a screen-sized rectangle for the DOM overlay, roughly equivalent to making that element fullscreen and setting its background transparent. This corresponds to the DOM overlay type `"screen"`:
@@ -294,8 +308,10 @@ https://immersive-web.github.io/webxr-samples/ar-barebones.html from the WebXR s
         xrButton.innerHTML = "Exit AR";
 
         // Show which type of DOM Overlay got enabled (if any)
-        document.getElementById("session-info").innerHTML =
-          "DOM Overlay type: " + session.domOverlayState.type;
+        if (session.domOverlayState) {
+          document.getElementById("session-info").innerHTML =
+            "DOM Overlay type: " + session.domOverlayState.type;
+        }
 
         session.addEventListener("end", onSessionEnded);
         let canvas = document.createElement("canvas");
