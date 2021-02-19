@@ -51,7 +51,7 @@ Applications can request use of a DOM overlay as a session request [feature](htt
 
 If DOM overlay was requested as an [optional feature](https://immersive-web.github.io/webxr/#dom-xrsessioninit-optionalfeatures) for the session request, the session will proceed even if the feature is unavailable. If the feature is active, the XR session object will have a `domOverlayState` attribute. If that attribute is absent, applications must assume that the DOM content is not visible and may choose to provide an alternate user interface. (If that is not feasible, applications should instead request DOM overlay as a required feature. That causes the session request to fail if the feature is not supported.)
 
-The exact appearance of the DOM overlay is platform dependent. Applications can use the [xrsession.domOverlayState.type](https://immersive-web.github.io/dom-overlays/#ref-for-dom-xrsession-domoverlaystate%E2%91%A2) attribute to distinguish the display modes.
+The exact appearance of the DOM overlay is platform dependent. Applications can use the [xrsession.domOverlayState.type](https://immersive-web.github.io/dom-overlays/#ref-for-dom-xrsession-domoverlaystate%E2%91%A2) attribute to distinguish the display modes. This attribute is provided by the user agent and remains unchanged for the duration of the session.
 
 On a phone used for handheld AR, a typical implementation would use a screen-sized rectangle for the DOM overlay, roughly equivalent to making that element fullscreen and setting its background transparent. This corresponds to the DOM overlay type `"screen"`:
 
@@ -86,7 +86,7 @@ In this example, the overlay element is a `<div>` that remains transparent, and 
 
 ```css
 header {
-  background-color: rgba(255, 255, 255, 0.90);
+  background-color: rgba(127, 127, 127, 0.90);
   position: relative;
   padding: 0.5em;
   left: 0px;
@@ -110,8 +110,10 @@ function onSessionStarted(session) {
   document.getElementById("xr-button").innerHTML = "Exit AR";
 
   // Show which type of DOM Overlay got enabled (if any)
-  document.getElementById("session-info").innerHTML =
-    "DOM Overlay type: " + session.domOverlayState.type;
+  if (session.domOverlayState) {
+    document.getElementById("session-info").innerHTML =
+      "DOM Overlay type: " + session.domOverlayState.type;
+  }
 }
 
 function onXRFrame(t, frame) {
@@ -201,7 +203,17 @@ By design, there must always be an active fullscreened element while the session
 
 The DOM overlay consists of a single transparent-background rectangular DOM element and its children. It is composited on top of the immersive content by the user agent. The application can style the alpha color channel for elements to leave parts of the overlay transparent, but there is no depth-based occlusion in relation to the drawn WebGL content or real-world scene. The environment view and 3D elements in the scene are always covered by non-transparent DOM elements.
 
-The display technology used affects how the overlay is composited. The application can use the DOM content's alpha channel to control visibility of DOM elements, and elements with a zero alpha value are always invisible, but technical limitations may result in content with non-zero alpha being invisible. Applications should check the existing <code>[XRSession.XREnvironmentBlendMode](https://immersive-web.github.io/webxr/#xrsession-interface)</code> attribute. A see-through AR headset typically uses the `"additive"` blend mode where black pixels appear transparent and dark colors on a transparent background are likely to be hard to see. Opaque black is only visible if the session uses `"alpha-blend"` blend mode.
+The display technology used affects how the overlay is composited. The application can use the DOM content's alpha channel to control visibility of DOM elements, and elements with a zero alpha value are always invisible, but technical limitations may result in content with non-zero alpha being invisible. Applications should check the existing <code>[XRSession.XREnvironmentBlendMode](https://immersive-web.github.io/webxr/#xrsession-interface)</code> attribute. A see-through AR headset typically uses the `"additive"` blend mode where black pixels appear transparent and dark colors on a transparent background are likely to be hard to see. Opaque black is only visible if the session uses `"alpha-blend"` blend mode. In CSS, you can use a [media query](https://www.w3.org/TR/mediaqueries-5/#environment-blending) to detect the environment blending mode and choose appropriate colors:
+
+```css
+@media(environment-blending: additive) {
+    body {
+      color: white;
+      font-size: 16px;
+      font-weight: 1000;
+    }
+}
+```
 
 The DOM overlay is restricted to a single rectangle at a fixed Z plane chosen by the user agent. There is no support for placing individual DOM elements at specific distances, or for showing different images to the left and right eyes for stereoscopic effects. This simplification is intended to make it easier to implement - the DOM content is conceptually rendered as a simple rectangular block of pixels that is then composed into a combined view.
 
