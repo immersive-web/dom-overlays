@@ -14,7 +14,7 @@ Mailing List Archives: https://lists.w3.org/Archives/Public/public-immersive-web
 
 Editor: Klaus Weidner 113597, Google http://google.com/, klausw@google.com
 
-Abstract: The WebXR Augmented Reality module expands the <a href="https://www.w3.org/TR/webxr/">WebXR Device API</a> with the functionality available on AR hardware.
+Abstract: The WebXR DOM Overlays module expands the <a href="https://www.w3.org/TR/webxr/">WebXR Device API</a> with a mechanism for showing interactive 2D web content during an immersive WebXR session. When the feature is enabled, the user agent will display the content of a single DOM element as a transparent-background 2D rectangle.
 
 Warning: custom
 Custom Warning Title: Unstable API
