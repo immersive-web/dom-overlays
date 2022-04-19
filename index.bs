@@ -417,6 +417,14 @@ A primary design goal for this module was that the DOM overlay should follow exi
 Cross-origin content is potentially vulnerable to <a href="https://www.w3.org/Security/wiki/Clickjacking_Threats">clickjacking threats</a>. The UA MUST continue to apply mitigations such as [[CSP#directive-frame-src]] when iframes are used in a DOM overlay. The UA MAY implement additional restrictions specifically for cross-origin content in a DOM overlay if necessary to address specific threats.
 
 
+
+<h2 id="changes" class="no-num">
+Changes</h2>
+
+<h3 id="changes-from-20210831" class="no-num">
+Changes from the <a href="https://www.w3.org/TR/2021/WD-webxr-dom-overlays-1-20210831/">First Public Working Draft 31 August 2021</a></h3>
+
+
 Acknowledgements {#ack}
 ================
 
