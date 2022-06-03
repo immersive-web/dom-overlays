@@ -308,7 +308,7 @@ When an {{XRInputSource}} begins the platform-specific action corresponding as i
 <div class="algorithm" data-algorithm="on-before-input-start">
 
   1. If the input source's {{XRInputSource/targetRaySpace}} intersects the DOM overlay at the time the input device's [=primary action=] is triggered:
-    1. [=Queue a task=] to [=fire an event|fire=] an {{XRSessionEvent}} named [=beforexrselect=] on the [=topmost event target=] within the DOM overlay {{XRDOMOverlayInit/root}} being intersected by the {{XRInputSource/targetRaySpace}}, setting {{Event/target}} to that element. This events bubbles, is cancelable, and is composed.
+    1. [=Queue a task=] to [=fire an event=] named [=beforexrselect=] using {{XRSessionEvent}} on the [=topmost event target=] within the DOM overlay {{XRDOMOverlayInit/root}} being intersected by the {{XRInputSource/targetRaySpace}}, setting {{Event/target}} to that element. This events bubbles, is cancelable, and is composed.
     1. Check how XR input should be handled as follows:
         <dl class="switch">
           <dt>If the event was cancelled</dt>
