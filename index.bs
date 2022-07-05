@@ -5,6 +5,7 @@ Group: immersivewebwg
 Status: ED
 TR: https://www.w3.org/TR/webxr-dom-overlays-1/
 ED: https://immersive-web.github.io/dom-overlays/
+TR: https://www.w3.org/TR/webxr-dom-overlays-1/
 Repository: immersive-web/dom-overlays
 Level: 1
 Mailing List Archives: https://lists.w3.org/Archives/Public/public-immersive-web/
