@@ -8,13 +8,13 @@ ED: https://immersive-web.github.io/dom-overlays/
 TR: https://www.w3.org/TR/webxr-dom-overlays-1/
 Repository: immersive-web/dom-overlays
 Level: 1
-Mailing List Archives: https://lists.w3.org/Archives/Public/public-immersive-web/
+Mailing List Archives: https://lists.w3.org/Archives/Public/public-immersive-web-wg/
 
 !Participate: <a href="https://github.com/immersive-web/dom-overlays/issues/new">File an issue</a> (<a href="https://github.com/immersive-web/dom-overlays/issues">open issues</a>)
-!Participate: <a href="https://lists.w3.org/Archives/Public/public-immersive-web/">Mailing list archive</a>
+!Participate: <a href="https://lists.w3.org/Archives/Public/public-immersive-web-wg/">Mailing list archive</a>
 !Participate: <a href="irc://irc.w3.org:6665/">W3C's #immersive-web IRC</a>
 
-Editor: Klaus Weidner 113597, Google http://google.com/, klausw@google.com
+Editor: Klaus Weidner 113597, Google https://google.com/, klausw@google.com
 
 Abstract: The WebXR DOM Overlays module expands the <a href="https://www.w3.org/TR/webxr/">WebXR Device API</a> with a mechanism for showing interactive 2D web content during an immersive WebXR session. When the feature is enabled, the user agent will display the content of a single DOM element as a transparent-background 2D rectangle.
 
