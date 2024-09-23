@@ -176,7 +176,7 @@ document.getElementById('button-container').addEventListener(
 CSS pseudo-class {#css-pseudo-class}
 ----------------
 
-The <dfn export>:xr-overlay</dfn> [=pseudo-class=] MUST match the [=overlay element=] for the duration of an immersive session using a DOM Overlay.
+The <dfn selector export>:xr-overlay</dfn> [=pseudo-class=] MUST match the [=overlay element=] for the duration of an immersive session using a DOM Overlay.
 
 The [=overlay element=] is a [=backdrop root=].
 
